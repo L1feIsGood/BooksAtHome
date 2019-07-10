@@ -1,0 +1,20 @@
+<button (click)="onChangeButtonColorClick()">Change dat color!</button>
+
+<table class='table table-striped' *ngIf="books">
+  <thead>
+  <tr>
+    <th>Title</th>
+    <th>Publish date</th>
+    <th>Author First Name</th>
+    <th>Author Last Name</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let book of books" [ngClass]="isRowColored(book) ? 'colored' : ''">
+    <td>{{ book.title }}</td>
+    <td>{{ book.publishedOn }}</td>
+    <td>{{ book.author.firstName }}</td>
+    <td>{{ book.author.lastName }}</td>
+  </tr>
+  </tbody>
+</table>

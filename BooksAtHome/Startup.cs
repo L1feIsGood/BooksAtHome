@@ -1,9 +1,13 @@
+using System;
+using System.Diagnostics;
+using BooksAtHome.Db;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json;
 
 namespace BooksAtHome
 {
@@ -20,6 +24,8 @@ namespace BooksAtHome
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
+            services.AddDbContext<BooksAtHomeContext>();
 
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
@@ -62,6 +68,29 @@ namespace BooksAtHome
                     spa.UseAngularCliServer(npmScript: "start");
                 }
             });
+
+            try
+            {
+                StartupDatabase(app);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(JsonConvert.SerializeObject(ex));
+                Debug.WriteLine(JsonConvert.SerializeObject(ex));
+            }
+        }
+
+        private static void StartupDatabase(IApplicationBuilder app)
+        {
+            using (var serviceScope = app.ApplicationServices
+                .GetRequiredService<IServiceScopeFactory>()
+                .CreateScope())
+            {
+                using (var context = serviceScope.ServiceProvider.GetService<BooksAtHomeContext>())
+                {
+                    DbInitializer.InitializeDatabase(context);
+                }
+            }
         }
     }
 }
