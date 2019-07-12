@@ -8,13 +8,15 @@ import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { HomeComponent } from './home/home.component';
 import { BooksComponent } from './books/books.component';
+import { StrToImgComponent } from './str-to-img/str-to-img.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavMenuComponent,
     HomeComponent,
-    BooksComponent
+    BooksComponent,
+    StrToImgComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -22,7 +24,8 @@ import { BooksComponent } from './books/books.component';
     FormsModule,
     RouterModule.forRoot([
       { path: '', component: HomeComponent, pathMatch: 'full' },
-      { path: 'Books', component: BooksComponent }
+      { path: 'Books', component: BooksComponent },
+      { path: 'StrToImg', component: StrToImgComponent },
     ])
   ],
   providers: [],
